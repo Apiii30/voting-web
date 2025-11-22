@@ -4,6 +4,7 @@ html, body {
     overflow-x: hidden;  /* cegah layar goyang */
     margin: 0;
     padding: 0;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -161,7 +162,7 @@ p {
 /* ============================
    RESPONSIVE UNTUK MOBILE
    ============================ */
-@media (max-width: 480px) {
+@media (max-width: 576px) {
 
     body {
         padding: 30px;
@@ -171,9 +172,11 @@ p {
     }
 
     .container {
+        max-width: 500px;
         width: 100%;
         padding: 0px;
-        position: relative;
+        position: center;
+        box-sizing: border-box;
     }
 
     h2 {
