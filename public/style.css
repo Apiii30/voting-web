@@ -1,5 +1,6 @@
 /* ==== GLOBAL ==== */
 html, body {
+    overflow-x: hidden;
     width: 100%;
     overflow-x: hidden;  /* cegah layar goyang */
     margin: 0;
@@ -174,9 +175,9 @@ p {
     .container {
         max-width: 500px;
         width: 100%;
-        padding: 0px;
+        padding: 10px;
         box-sizing: border-box;
-        padding-right: 65px;
+
     }
 
     h2 {
@@ -277,4 +278,9 @@ p {
     box-shadow: none;
     transform: none;
     opacity: 0.6;
+}
+
+* {
+    box-sizing: border-box;
+    max-width: 100%;
 }
