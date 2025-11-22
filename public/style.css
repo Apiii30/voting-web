@@ -1,0 +1,277 @@
+/* ==== GLOBAL ==== */
+html, body {
+    width: 100%;
+    overflow-x: hidden;  /* cegah layar goyang */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    backdrop-filter: blur(1px);
+    height: 100vh;
+    color: #1e2a38;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Fade-in halaman */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.container {
+    text-align: center;
+    padding: 50px;
+    animation: slideUp 0.8s ease;
+}
+
+/* Animasi container naik dari bawah */
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    color: black;
+}
+
+p {
+    color: rgb(125, 125, 125);
+}
+
+.glow-text {
+    color: whitesmoke;
+    font-weight: bold;
+    text-shadow:
+        0 0 10px darkblue,
+        0 0 20px darkcyan,
+        0 0 30px darkblue,
+        0 0 40px darkcyan;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow:
+            0 0 5px darkblue,
+            0 0 10px darkcyan,
+            0 0 20px skyblue;
+    }
+    to {
+        text-shadow:
+            0 0 20px darkblue,
+            0 0 30px darkcyan,
+            0 0 40px darkblue,
+            0 0 60px skyblue;
+    }
+}
+
+
+/* ==== VOTE SECTION ==== */
+
+.vote-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    animation: fadeIn 1.2s ease;
+}
+
+/* Card kandidat */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 220px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efek zoom saat hover */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Foto kandidat */
+.candidate-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Tombol vote */
+.vote-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #1e5aa8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.vote-btn:hover {
+    background-color: #174783;
+    transform: scale(1.05);
+}
+
+.vote-btn:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* Link ke hasil */
+.result-link, .back-link {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 25px;
+    background-color: #1e5aa8;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.result-link:hover,
+.back-link:hover {
+    background-color: #174783;
+    transform: scale(1.05);
+}
+
+#chartCanvas {
+    max-width: 300px;
+    max-height: 300px;
+    margin: 0 auto;
+}
+
+/* ============================
+   RESPONSIVE UNTUK MOBILE
+   ============================ */
+@media (max-width: 480px) {
+
+    body {
+        padding: 30px;
+        margin: 0 auto;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0px;
+        position: relative;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .image-box img {
+        width: 100%;
+        height: auto;
+        border-radius: 14px;
+    }
+
+    .vote-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    a {
+        font-size: 16px;
+        padding: 10px;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Grafik result halaman */
+    #chartCanvas {
+        max-width: 260px !important;
+        max-height: 260px !important;
+        margin: 0 auto;
+    }
+}
+
+/* CARD UTAMA */
+.card {
+    background: linear-gradient(100deg, rgb(255, 255, 255), skyblue);
+    border-radius: 18px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 380px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+/* SLIDER CONTAINER */
+.slider {
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 14px;
+    margin-bottom: 15px;
+}
+
+/* SLIDES WRAPPER */
+.slides {
+    display: flex;
+    width: 100%; /* 2 foto */
+    height: 100%;
+    transition: transform 0.35s ease;
+}
+
+/* FOTO SLIDE */
+.slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    flex-shrink: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* TOMBOL */
+.vote-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4da6ff, #0059b3);
+    color: white;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.vote-btn:active {
+    transform: scale(0.95);
+}
+
+.vote-btn:disabled {
+    background: #b0bcd0 !important;
+    color: #ffffff !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.6;
+}

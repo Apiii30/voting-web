@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Hasil Voting</title>
+    <script>
+  const allowedPassword = "praktisi61"; // GANTI password ini
+
+  const input = prompt("Masukkan password untuk melihat hasil voting:");
+
+  if (input !== allowedPassword) {
+    alert("Password salah. Anda tidak diizinkan melihat hasil.");
+    window.location.href = "index.html"; // Kembali ke halaman voting
+  }
+</script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hasil Voting</h1>
+        <canvas id="chartCanvas" width="300" height="300"></canvas>
+        <a class="back-link" href="index.html">Kembali ke Halaman Voting</a>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase + result.js -->
+    <script type="module">
+
+        // Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDu5JVQ9iUTFA7fP31fbIHUbfOc6aA1Dgg",
+            authDomain: "voting-fb614.firebaseapp.com",
+            databaseURL: "https://voting-fb614-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "voting-fb614",
+            storageBucket: "voting-fb614.appspot.com",
+            messagingSenderId: "882619705580",
+            appId: "1:882619705580:web:f948fd5bfde9cba7b6ddc9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db  = getDatabase(app);
+
+        console.log("Firebase Loaded");
+
+        // === LOAD RESULT ===
+        async function loadResults() {
+            const snap = await get(ref(db, "votes"));
+            const data = snap.val() || { A: 0, B: 0 };
+
+            console.log("DATA:", data);
+
+            renderChart(data.A, data.B);
+        }
+
+        // === CHART ===
+        function renderChart(a, b) {
+            const ctx = document.getElementById("chartCanvas").getContext("2d");
+
+            new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: ["Kandidat 1", "Kandidat 2"],
+                    datasets: [{
+                        data: [a, b],
+                        backgroundColor: ["#4da6ff", "#0059b3"],
+                        hoverOffset: 12
+                    }]
+                }
+            });
+        }
+
+        loadResults();
+
+    </script>
+</body>
+</html>

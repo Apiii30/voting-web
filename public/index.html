@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Voting Kandidat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="glow-text">Pilih Kandidat Pilihanmu!</h1>
+        <p class="glow-text">Berikan suaramu untuk kandidat <br>
+             terbaik untuk Praktisi.</p>
+
+        <div class="vote-section">
+
+            <!-- KANDIDAT A -->
+            <div class="card">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="2.png" alt="Foto A 1">
+                        <img src="3.png" alt="Foto A 2">
+                    </div>
+                </div>
+                <button class="vote-btn" onclick="vote('A')">Vote Kandidat 1</button>
+            </div>
+
+            <!-- KANDIDAT B -->
+            <div class="card">
+                <div class="slider">
+                    <div class="slides">
+                        <img src="1.png" alt="Foto B 1">
+                        <img src="5.png" alt="Foto B 2">
+                    </div>
+                </div>
+                <button class="vote-btn" onclick="vote('B')">Vote Kandidat 2</button>
+            </div>
+
+        </div>
+        <a class="result-link" href="result.html">Lihat Hasil Voting</a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Firebase Config kamu (SUDAH BENAR)
+        const firebaseConfig = {
+          apiKey: "AIzaSyDu5JVQ9iUTFA7fP31fbIHUbfOc6aA1Dgg",
+          authDomain: "voting-fb614.firebaseapp.com",
+          databaseURL: "https://voting-fb614-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "voting-fb614",
+          storageBucket: "voting-fb614.firebasestorage.app",
+          messagingSenderId: "882619705580",
+          appId: "1:882619705580:web:f948fd5bfde9cba7b6ddc9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db  = getDatabase(app);
+
+        // Expose ke window supaya bisa diakses dari script.js
+        window.db = db;
+        window.dbRef = ref;
+        window.dbGet = get;
+        window.dbSet = set;
+        window.dbUpdate = update;
+    </script>
+    <!-- Script utama -->
+    <script src="script.js"></script>
+
+</body>
+</html>
