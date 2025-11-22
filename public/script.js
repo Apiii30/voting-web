@@ -1,54 +1,77 @@
-// Saat halaman dibuka, cek apakah user sudah vote
-document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("hasVoted")) {
+/********************************************
+ *  GENERATE DEVICE ID (Dilakukan sekali)
+ ********************************************/
+let deviceId = localStorage.getItem("deviceId");
+if (!deviceId) {
+    deviceId = crypto.randomUUID();
+    localStorage.setItem("deviceId", deviceId);
+}
+
+/********************************************
+ *  Disabled tombol jika user sudah vote
+ ********************************************/
+document.addEventListener("DOMContentLoaded", async () => {
+    if (!window.db) return;
+
+    const db = window.db;
+    const voterRef = window.dbRef(db, "voters/" + deviceId);
+    const voterSnap = await window.dbGet(voterRef);
+
+    if (voterSnap.exists()) {
         disableButtons();
     }
 });
 
-// Fungsi kirim vote ke Firebase
+/********************************************
+ *  SUBMIT VOTE (cek 100% di Firebase)
+ ********************************************/
 async function submitVote(option) {
-    // Cegah vote ganda
-    if (localStorage.getItem("hasVoted")) {
-        alert("Kamu sudah vote!");
-        return;
-    }
-
-    // Pastikan Firebase sudah ter-load
-    if (!window.db || !window.dbRef) {
-        alert("Firebase belum siap. Coba refresh halaman.");
-        return;
-    }
-
     const db = window.db;
 
-    try {
-        // Ambil data vote
-        const snapshot = await window.dbGet(window.dbRef(db, "votes"));
-        let data = snapshot.val() || { A: 0, B: 0 };
-
-        // Tambah vote
-        data[option] = (data[option] || 0) + 1;
-
-        // Simpan data ke Firebase
-        await window.dbSet(window.dbRef(db, "votes"), data);
-
-        // Tandai sudah vote
-        localStorage.setItem("hasVoted", "true");
-        disableButtons();
-
-        alert("Vote kamu berhasil!");
-    } catch (err) {
-        console.error(err);
-        alert("Gagal mengirim vote. Coba lagi.");
+    if (!db) {
+        alert("Firebase belum siap, coba refresh halaman.");
+        return;
     }
+
+    // REFERENSI UNTUK VOTER INI
+    const voterRef = window.dbRef(db, "voters/" + deviceId);
+    const voterSnap = await window.dbGet(voterRef);
+
+    // CEK APAKAH SUDAH PERNAH VOTE
+    if (voterSnap.exists()) {
+        alert("Kamu sudah pernah vote!");
+        disableButtons();
+        return;
+    }
+
+    // AMBIL DATA TOTAL VOTE
+    const votesRef = window.dbRef(db, "votes");
+    const votesSnap = await window.dbGet(votesRef);
+    let totalVotes = votesSnap.val() || { A: 0, B: 0 };
+
+    // TAMBAH VOTE
+    totalVotes[option] = (totalVotes[option] || 0) + 1;
+
+    // UPDATE KE FIREBASE
+    await window.dbSet(votesRef, totalVotes);
+
+    // TANDAI USER INI SUDAH VOTE
+    await window.dbSet(voterRef, true);
+
+    disableButtons();
+    alert("Vote berhasil!");
 }
 
-// Fungsi wrapper untuk HTML
+/********************************************
+ *  FUNGSI UNTUK HTML BUTTON
+ ********************************************/
 function vote(option) {
     submitVote(option);
 }
 
-// Nonaktifkan tombol
+/********************************************
+ *  DISABLE TOMBOL VOTE
+ ********************************************/
 function disableButtons() {
     document.querySelectorAll(".vote-btn").forEach(btn => {
         btn.disabled = true;
@@ -56,7 +79,10 @@ function disableButtons() {
 }
 
 
-// SWIPE SLIDER
+
+/********************************************
+ *  SWIPE SLIDER (original code)
+ ********************************************/
 document.querySelectorAll('.slider').forEach(slider => {
     const slides = slider.querySelector('.slides');
     let startX = 0;
