@@ -175,8 +175,8 @@ p {
         max-width: 500px;
         width: 100%;
         padding: 0px;
-        position: center;
         box-sizing: border-box;
+        padding-right: 65px;
     }
 
     h2 {
